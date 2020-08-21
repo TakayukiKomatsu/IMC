@@ -9,11 +9,12 @@ export default class App extends Component {
     imc: 0,
     legenda: "Indeterminado",
   };
+
   calcularIMC = () => {
     const resultado = this.state.peso / (this.state.altura * this.state.altura);
 
     this.setState({
-      imc: resultado,
+      imc: Math.ceil(resultado),
     });
 
     if (resultado < 18.5) {
@@ -45,7 +46,7 @@ export default class App extends Component {
             keyboardType="number-pad"
             onChangeText={(value) => {
               this.setState({
-                peso: value,
+                peso: value.replace(",", "."),
               });
             }}
           />
@@ -56,7 +57,7 @@ export default class App extends Component {
             keyboardType="number-pad"
             onChangeText={(value) => {
               this.setState({
-                altura: value,
+                altura: value.replace(",", "."),
               });
             }}
           />
