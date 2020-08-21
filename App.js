@@ -4,9 +4,29 @@ import { Text, StyleSheet, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 export default class App extends Component {
   state = {
-    height: 0,
-    weight: 0,
+    peso: 0,
+    altura: 0,
     imc: 0,
+    legenda: "Indeterminado",
+  };
+  calcularIMC = () => {
+    const resultado = this.state.peso / (this.state.altura * this.state.altura);
+
+    this.setState({
+      imc: resultado,
+    });
+
+    if (resultado < 18.5) {
+      this.setState({ legenda: "Magreza" });
+    } else if (resultado >= 18.5 && resultado < 25) {
+      this.setState({ legenda: "Normal" });
+    } else if (resultado >= 25 && resultado < 30) {
+      this.setState({ legenda: "Sobrepeso" });
+    } else if (resultado >= 30 && resultado < 40) {
+      this.setState({ legenda: "Obesidade" });
+    } else if (resultado >= 40) {
+      this.setState({ legenda: "Obesidade grave" });
+    }
   };
 
   render() {
@@ -14,8 +34,8 @@ export default class App extends Component {
       <View style={styles.app}>
         <Text style={styles.legenda}>Seu IMC</Text>
         <View>
-          <Text style={styles.resultado}>20</Text>
-          <Text style={styles.diagnostico}>Normal</Text>
+          <Text style={styles.resultado}>{this.state.imc}</Text>
+          <Text style={styles.diagnostico}>{this.state.legenda}</Text>
         </View>
 
         <View>
@@ -23,9 +43,30 @@ export default class App extends Component {
             style={styles.input}
             label="Peso"
             keyboardType="number-pad"
+            onChangeText={(value) => {
+              this.setState({
+                peso: value,
+              });
+            }}
           />
-          <TextInput style={styles.input} label="Altura" />
-          <Button contentStyle={styles.button} color="#eee">
+
+          <TextInput
+            style={styles.input}
+            label="Altura"
+            keyboardType="number-pad"
+            onChangeText={(value) => {
+              this.setState({
+                altura: value,
+              });
+            }}
+          />
+
+          <Button
+            contentStyle={styles.button}
+            color="#eee"
+            mode="contained"
+            onPress={this.calcularIMC}
+          >
             Calcular
           </Button>
         </View>
@@ -58,5 +99,9 @@ const styles = StyleSheet.create({
   },
   input: {
     margin: 10,
+  },
+  button: {
+    backgroundColor: "#9055A2",
+    padding: 10,
   },
 });
