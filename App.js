@@ -8,6 +8,7 @@ export default class App extends Component {
     altura: 0,
     imc: 0,
     legenda: "Indeterminado",
+    cor: "#bfc3c7",
   };
 
   calcularIMC = () => {
@@ -18,15 +19,15 @@ export default class App extends Component {
     });
 
     if (resultado < 18.5) {
-      this.setState({ legenda: "Magreza" });
+      this.setState({ legenda: "Magreza", cor: "#e74c3c" });
     } else if (resultado >= 18.5 && resultado < 25) {
-      this.setState({ legenda: "Normal" });
+      this.setState({ legenda: "Normal", cor: "##2ecc71" });
     } else if (resultado >= 25 && resultado < 30) {
-      this.setState({ legenda: "Sobrepeso" });
+      this.setState({ legenda: "Sobrepeso", cor: "#f1c40f" });
     } else if (resultado >= 30 && resultado < 40) {
-      this.setState({ legenda: "Obesidade" });
+      this.setState({ legenda: "Obesidade", cor: "#e67e22" });
     } else if (resultado >= 40) {
-      this.setState({ legenda: "Obesidade grave" });
+      this.setState({ legenda: "Obesidade grave", cor: "#e74c3c" });
     }
   };
 
@@ -34,14 +35,15 @@ export default class App extends Component {
     return (
       <View style={styles.app}>
         <Text style={styles.legenda}>Seu IMC</Text>
-        <View>
+
+        <View style={[{ backgroundColor: this.state.cor }, styles.painel]}>
           <Text style={styles.resultado}>{this.state.imc}</Text>
           <Text style={styles.diagnostico}>{this.state.legenda}</Text>
         </View>
 
         <View>
           <TextInput
-            style={styles.input}
+            style={styles.peso}
             label="Peso"
             keyboardType="number-pad"
             onChangeText={(value) => {
@@ -52,7 +54,7 @@ export default class App extends Component {
           />
 
           <TextInput
-            style={styles.input}
+            style={styles.altura}
             label="Altura"
             keyboardType="number-pad"
             onChangeText={(value) => {
@@ -62,12 +64,7 @@ export default class App extends Component {
             }}
           />
 
-          <Button
-            contentStyle={styles.button}
-            color="#eee"
-            mode="contained"
-            onPress={this.calcularIMC}
-          >
+          <Button mode="contained" onPress={this.calcularIMC}>
             Calcular
           </Button>
         </View>
@@ -79,30 +76,37 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   app: {
     padding: 10,
-    backgroundColor: "#8684d1",
   },
+
+  painel: {
+    borderRadius: 5,
+    marginVertical: 10,
+    paddingVertical: 8,
+    width: 150,
+    alignSelf: "center",
+  },
+
   legenda: {
     textAlign: "center",
     fontWeight: "bold",
-    color: "#eee",
   },
+
   resultado: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 22,
-    color: "#eee",
   },
   diagnostico: {
     textAlign: "center",
     fontSize: 20,
-    color: "#eee",
-    paddingBottom: 20,
   },
-  input: {
-    margin: 10,
+  peso: {
+    marginVertical: 10,
+  },
+  altura: {
+    marginVertical: 10,
   },
   button: {
-    backgroundColor: "#9055A2",
     padding: 10,
   },
 });
